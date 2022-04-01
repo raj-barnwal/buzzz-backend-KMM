@@ -3,5 +3,5 @@ const app=express();
 
 
 app.listen(8800, ()=>{
-    console.log("backend is ready")
+    console.log("listening 8800")
 })
