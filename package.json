@@ -1,0 +1,24 @@
+{
+  "name": "buzzz-backend-kmm",
+  "version": "1.0.0",
+  "description": "Demo project for a Social medial site",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/raj-barnwal/buzzz-backend-KMM.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/raj-barnwal/buzzz-backend-KMM/issues"
+  },
+  "homepage": "https://github.com/raj-barnwal/buzzz-backend-KMM#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.9",
+    "nodemon": "^2.0.15"
+  }
+}
