@@ -2,6 +2,7 @@ const express= require('express');
 const router =express.Router();
 const bcrypt = require("bcrypt");
 const User= require("../models/user");
+const { json } = require('express/lib/response');
 
 //updating user
 
@@ -56,7 +57,49 @@ router.get("/:id", async (req, res)=>{
     }
 })
 //follow user
+router.put("/:id/follow", async(req, res)=>{
+    if(req.body.userId !== req.params.id){
+        try{
+            const user =await User.findById(req.body.userId);
+            const loggedinUser =await User.findById(req.body.userId);
+            if(!user.followers.includes(req.body.userId)){
+                await user.updateOne({$push:{followers:req.body.userId}});
+                await loggedinUser.updateOne({$push:{following:req.params.id}});
+                res.status(200).json("user has been followed");
+            }else{
+                res.status(403).json("already following this person")
+            }
+        }catch(err){
+            res.status(500).json(err);
+        }
+    }else{
+        res.status(403).json("cant follow urself")
+    }
+
+})
 
 //unfollow user
+router.put("/:id/unfollow", async(req, res)=>{
+    if(req.body.userId !== req.params.id){
+        try{
+            const user =await User.findById(req.body.userId);
+            const loggedinUser =await User.findById(req.body.userId);
+            if(user.followers.includes(req.body.userId)){
+                await user.updateOne({$pull:{followers:req.body.userId}});
+                await loggedinUser.updateOne({$pull:{following:req.params.id}});
+                res.status(200).json("user has been unfollowed");
+
+            }else{
+                res.status(403).json("not following this person")
+            }
+        }catch(err){
+            res.status(500).json(err);
+        }
+    }else{
+        res.status(403).json("cant unfollow urself")
+    }
+
+})
+
 
 module.exports = router

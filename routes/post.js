@@ -1,4 +1,5 @@
 const express= require('express');
+const UserInfoError = require('passport-google-oauth20/lib/errors/userinfoerror');
 const router =express.Router();
 const Post= require("../models/post");
 
@@ -66,8 +67,21 @@ router.get("/:id", async(req, res)=>{
         res.status(500).json(err)
     }
 })
-//get all post
-router.get("/timeline", async(req, res)=>{
+//get all post or feed
+router.get("/timeline/feed", async(req, res)=>{
+    try{
+        const loggedinUser= await User.findById(req.body.userId);
+        const userPosts = await Post.find({userId: loggedinUser._id});
+        const friendPosts = await Promise.all(
+            loggedinUser.following.map(friendId=>{
+                return Post.find({userId: friendId});
+            })
+        );
+        res.json(userPosts.concat(...friendPosts))
+
+    }catch(err){
+        res.status(500).json(err);
+    }
       
 })
 
