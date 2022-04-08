@@ -5,8 +5,11 @@ require('dotenv').config();
 const helmet= require("helmet");
 const morgon= require("morgan");
 const userRouter= require("./routes/user");
-const authRouter= require("./routes/auth")
-const mongoose= require("mongoose")
+const authRouter= require("./routes/auth");
+const postRouter= require("./routes/post");
+
+//db connection
+const mongoose= require("mongoose");
 
 mongoose.connect(process.env.MONGo_URI,{
     useNewUrlParser: true,
@@ -20,8 +23,7 @@ mongoose.connect(process.env.MONGo_URI,{
       console.error("Error connecting to mongo", err);
     });
 
-//connecting db
-// require("./db/connectDB");
+
 
 
 
@@ -35,6 +37,7 @@ app.use(morgon("common"));
 app.use(cors());
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
+app.use("/api/posts", postRouter );
 
 // app.use('/api/googlelogin', googlelogin);
 
