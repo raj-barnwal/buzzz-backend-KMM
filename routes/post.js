@@ -1,5 +1,5 @@
 const express= require('express');
-const UserInfoError = require('passport-google-oauth20/lib/errors/userinfoerror');
+const User= require("../models/user")
 const router =express.Router();
 const Post= require("../models/post");
 
@@ -61,29 +61,46 @@ router.put("/:id/like", async(req, res)=>{
 //get a post
 router.get("/:id", async(req, res)=>{
     try{
-        const post =Post.findById(req.params.id);
+        const post =await Post.findById(req.params.id);
         res.status(200).json(post);
     }catch(err){
         res.status(500).json(err)
     }
 })
 //get all post or feed
-router.get("/timeline/feed", async(req, res)=>{
-    try{
-        const loggedinUser= await User.findById(req.body.userId);
-        const userPosts = await Post.find({userId: loggedinUser._id});
-        const friendPosts = await Promise.all(
-            loggedinUser.following.map(friendId=>{
-                return Post.find({userId: friendId});
-            })
-        );
-        res.json(userPosts.concat(...friendPosts))
+// router.get("/feed/all", async(req, res)=>{
+//     try{
+//         const loggedinUser= await User.findById(req.body.userId);
+//         const userPosts = await Post.find({userId: loggedinUser._id});
+//         const friendPosts = await Promise.all(
+//             loggedinUser.following.map(friendId=>{
+//                 return Post.find({userId: friendId});
+//             })
+//         );
+//         res.status(200).json(userPosts.concat(...friendPosts))
 
-    }catch(err){
-        res.status(500).json(err);
-    }
+//     }catch(err){
+//         res.status(500).json(err);
+//     }
       
-})
+// })
+router.get("/feed/:id", async (req, res) => {
+    try {
+      const currentUser = await User.findById(req.params.id);
+      console.log(currentUser);
+      const userPosts = await Post.find({ userId: currentUser._id });
+    //   const friendPosts = await Promise.all(
+    //     currentUser.followings.map((friendId) => {
+    //       return Post.find({ userId: friendId });
+    //     })
+    //   ); .concat(...friendPosts)
+      res.json(userPosts)
+    } catch (err) {
+      res.status(500).json(err);
+    }
+  });
+
+  
 
 
 module.exports= router;

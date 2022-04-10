@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
         required: true,
         min:8,
     },
+    profilePicture:{
+        type:String,
+        default:""
+    },
     coverPicture:{
         type:String,
         default:""
