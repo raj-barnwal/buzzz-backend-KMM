@@ -33,7 +33,7 @@ mongoose.connect(process.env.MONGo_URI,{
 // const {signup, googlelogin}=require("./controller/auth");
 // getting or importing routes
 // const authRoutes = require("./routes/auth");
-
+app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(helmet());
 app.use(morgon("common"));
@@ -42,15 +42,22 @@ app.use(cors({
     methods:"GET, POST, PUT, DELETE",
     credentials:true
 }));
+// app.use(cookieSession({
+//     secret:"session",
+//     resave: true,
+//     saveUnInitialized:true
+// }));
+const session= cookieSession({
+  secret:"session",
+    resave: true,
+    saveUnInitialized:true
+})
+app.use(session);
 app.use("/api/users", userRouter);
-app.use("/api/auth", authRouter);
+app.use("/auth", authRouter);
 app.use("/api/posts", postRouter );
 
-// app.use(cookieSession({
-//     name:"session",
-    
-//     maxAge: 24*60*60*100
-// }));
+
 
 app.use(passport.initialize());
 app.use(passport.session());

@@ -4,35 +4,32 @@ const mongoose = require('mongoose');
 const userSchema = new mongoose.Schema({
     name:{
         type: String,
-        required: true,
-        max: 30
+      
     },
     email:{
         type: String,
-        required: true,
-        unique: true,
+       
         
     },
     password:{
         type: String,
-        required: true,
-        min:8,
+      
     },
     profilePicture:{
         type:String,
-        default:""
+        
     },
     coverPicture:{
         type:String,
-        default:""
+        
     },
     followers:{
         type:Array,
-        default:[]
+       
     },
     following:{
         type:Array,
-        default:[]
+       
     },
     isAdmin:{
         type:Boolean,
@@ -40,15 +37,15 @@ const userSchema = new mongoose.Schema({
     },
     description:{
         type:String,
-        max:150
+        
     },
     city:{
         type:String,
-        max: 20
+       
     },
     hometown:{
         type: String,
-        max:20
+       
     },
     relationship:{
         type:Number,
