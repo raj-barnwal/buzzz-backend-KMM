@@ -7,6 +7,9 @@ const morgon= require("morgan");
 const userRouter= require("./routes/user");
 const authRouter= require("./routes/auth");
 const postRouter= require("./routes/post");
+const cookieSession = require("cookie-session");
+const passport = require("passport");
+const passportSetup=require("./passport");
 
 //db connection
 const mongoose= require("mongoose");
@@ -34,12 +37,23 @@ mongoose.connect(process.env.MONGo_URI,{
 app.use(express.json());
 app.use(helmet());
 app.use(morgon("common"));
-app.use(cors());
+app.use(cors({
+    origin:"http://localhost:3000",
+    methods:"GET, POST, PUT, DELETE",
+    credentials:true
+}));
 app.use("/api/users", userRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/posts", postRouter );
 
-// app.use('/api/googlelogin', googlelogin);
+// app.use(cookieSession({
+//     name:"session",
+    
+//     maxAge: 24*60*60*100
+// }));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.get('/heloo', (req, res)=>{
     res.send("heloo")
