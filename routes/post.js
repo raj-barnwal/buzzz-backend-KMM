@@ -87,13 +87,13 @@ router.get("/:id", async(req, res)=>{
 router.get("/feed/:id", async (req, res) => {
     try {
       const currentUser = await User.findById(req.params.id);
-      console.log(currentUser);
+      //console.log(currentUser);
 
-        console.log(currentUser.following);
+        //console.log(currentUser.following);
         const userIds = [currentUser._id, ...currentUser.following];
-        console.log(userIds);
+      //  console.log(userIds);
         const post=await Post.find({ userId: { "$in" : userIds} }).lean();
-        console.log("this is post",post);
+        //console.log("this is post",post);
         res.status(200).send(post);
     } catch (err) {
         console.log(err);

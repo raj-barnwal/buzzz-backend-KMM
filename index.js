@@ -10,6 +10,8 @@ const postRouter= require("./routes/post");
 const cookieSession = require("cookie-session");
 const passport = require("passport");
 const passportSetup=require("./passport");
+const multer= require("multer");
+const path= require("path");
 
 //db connection
 const mongoose= require("mongoose");
@@ -27,7 +29,7 @@ mongoose.connect(process.env.MONGo_URI,{
     });
 
 
-
+app.use("/images", express.static(path.join(__dirname, "public/images")));
 
 
 // const {signup, googlelogin}=require("./controller/auth");
@@ -37,6 +39,25 @@ app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(helmet());
 app.use(morgon("common"));
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "public/images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
+
+const upload = multer({ storage: storage });
+app.post("/api/upload", upload.single("file"), (req, res) => {
+  try {
+    return res.status(200).json("File uploded successfully");
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 app.use(cors({
     origin:"http://localhost:3000",
     methods:"GET, POST, PUT, DELETE",

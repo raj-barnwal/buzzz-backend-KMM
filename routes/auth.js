@@ -37,25 +37,7 @@ passport.use(
                 })
             }
         })
-        // User.findOne({ email: profile.emails[0].value }, (err, data) => {
-        //   if (data) {
-        //     // user exists
-        //     return done(null, data);
-        //   } else {
-        //     console.log('user created');
-        //     // create a user
-        //     User({
-        //       name: profile.firstname,
-              
-        //     //   profilePicture: profile.photos[0].value,
-        //       email: profile.emails[0].value,
-        //       password: null,
-        //       provider: 'google',
-        //     }).save(function(err, data)  {
-        //       return done(null, data);
-        //     });
-        //   }
-        // });
+    
       }
     )
   );
@@ -72,17 +54,7 @@ passport.use(
   });
 
 
-// // Setup use serialization
-// passport.serializeUser((user, done) => {
-//     done(null, typeof user === 'string' ? user : JSON.stringify(user));
-//    });
 
-//    passport.deserializeUser((user, done) => {
-//     done(null, {
-//       provider: user.provider,
-//       id: user.provider_id
-//     });
-//   });
 
 //register
 router.post("/register", async (req,res)=>{
